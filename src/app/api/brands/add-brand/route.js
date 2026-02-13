@@ -35,17 +35,26 @@ export async function POST(req) {
         const pocPassword = formData.get("pocPassword");
         const brandLogo = formData.get("brandLogo");
 
-        let logoUrl = "";
+        let imageUrl = "";
 
+        // Handle file upload if a logo is provided
         if (brandLogo && brandLogo.size > 0) {
+            const bytes = await brandLogo.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+
             const storageRef = ref(
                 storage,
                 `brands/${Date.now()}-${brandLogo.name}`
             );
-            await uploadBytes(storageRef, brandLogo);
-            logoUrl = await getDownloadURL(storageRef);
+
+            await uploadBytes(storageRef, buffer, {
+                contentType: brandLogo.type,
+            });
+
+            imageUrl = await getDownloadURL(storageRef);
         }
 
+        // Check for duplicate email
         const emailQuery = query(
             collection(db, "brands"),
             where("poc.email", "==", pocEmail),
@@ -53,15 +62,14 @@ export async function POST(req) {
         );
 
         const emailSnapshot = await getDocs(emailQuery);
-        const emailExists = !emailSnapshot.empty;
 
-
-        if (emailExists) {
+        if (!emailSnapshot.empty) {
             return NextResponse.json(
                 { success: false, message: "Email already exists" },
                 { status: 400 }
             );
         }
+
 
 
         // 1️⃣ Create document
@@ -73,7 +81,7 @@ export async function POST(req) {
             gst,
             status,
             adBudget: Number(monthlySpend) || 0,
-            logoUrl,
+            imageUrl,
             poc: {
                 name: pocName,
                 email: pocEmail,

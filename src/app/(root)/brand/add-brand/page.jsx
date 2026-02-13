@@ -39,31 +39,29 @@ export default function BrandForm() {
         const formData = new FormData();
 
         Object.entries(data).forEach(([key, value]) => {
-            // ✅ Handle file input
+            // Handle file input
             if (key === "brandLogo") {
-                if (value instanceof FileList && value.length > 0) {
-                    formData.append("brandLogo", value[0]);
+                // Now value is a File object, not FileList
+                if (value instanceof File) {
+                    formData.append("brandLogo", value);
                 }
                 return;
             }
 
-            // ✅ Skip empty values (important)
             if (value === undefined || value === null) return;
 
-            // ✅ Convert numbers / booleans safely
             if (typeof value === "number" || typeof value === "boolean") {
                 formData.append(key, String(value));
                 return;
             }
 
-            // ✅ Normal strings
             formData.append(key, value);
         });
 
         try {
             const res = await fetch("/api/brands/add-brand", {
                 method: "POST",
-                body: formData, // ❗ no headers
+                body: formData,
             });
 
             const result = await res.json();
@@ -74,7 +72,6 @@ export default function BrandForm() {
 
             setIsSubmitted(true);
             setTimeout(() => setIsSubmitted(false), 3000);
-
             router.push("/brand");
         } catch (error) {
             console.error("Brand submit error:", error);

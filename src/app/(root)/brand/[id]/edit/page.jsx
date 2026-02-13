@@ -50,7 +50,7 @@ export default function BrandEditPage() {
 
                 if (data.success) {
                     const brand = data.data;
-                    setPreviewLogo(brand.logoUrl || "");
+                    setPreviewLogo(brand.imageUrl || "");
 
                     // Set form values
                     reset({
