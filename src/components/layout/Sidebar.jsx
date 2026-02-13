@@ -1,5 +1,5 @@
 "use client";
-import { LayoutDashboard, ChevronDown, ChevronUp, Dot, Handshake } from "lucide-react";
+import { LayoutDashboard, ChevronDown, ChevronUp, Dot, Handshake, MapPinCheckInside } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
@@ -13,6 +13,7 @@ const Sidebar = () => {
         () => [
             { label: "Dashboard", path: "/", icon: LayoutDashboard },
             { label: 'Brand', path: '/brand', icon: Handshake },
+            { label: 'Location', path: '/location', icon: MapPinCheckInside },
         ],
         []
     );

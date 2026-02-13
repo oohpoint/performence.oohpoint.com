@@ -4,18 +4,21 @@ import { Upload } from "lucide-react";
 export const FileUpload = ({ label, name, register, setValue }) => {
     const [isDragging, setIsDragging] = useState(false);
     const [fileName, setFileName] = useState("");
-    const inputRef = useRef(null);
+    const fileRef = useRef(null);
+
+    const handleFileChange = (file) => {
+        if (file) {
+            setFileName(file.name);
+            // Store the file directly, not FileList
+            setValue(name, file, { shouldValidate: true });
+        }
+    };
 
     const handleDrop = (e) => {
         e.preventDefault();
         setIsDragging(false);
-
-        const files = e.dataTransfer.files;
-        if (files && files.length > 0) {
-            setFileName(files[0].name);
-
-            // ✅ IMPORTANT: update React Hook Form
-            setValue(name, files, { shouldValidate: true });
+        if (e.dataTransfer.files?.[0]) {
+            handleFileChange(e.dataTransfer.files[0]);
         }
     };
 
@@ -31,27 +34,29 @@ export const FileUpload = ({ label, name, register, setValue }) => {
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
                 className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer
-          ${isDragging
+                    ${isDragging
                         ? "border-blue-500 bg-blue-50"
                         : "border-slate-300 bg-slate-50 hover:border-blue-400"
                     }`}
-                onClick={() => inputRef.current?.click()}
+                onClick={() => fileRef.current?.click()}
             >
                 <input
                     type="file"
                     accept="image/*"
                     {...register(name)}
-                    ref={inputRef}
+                    ref={fileRef}
                     onChange={(e) => {
-                        if (e.target.files?.length > 0) {
-                            setFileName(e.target.files[0].name);
+                        if (e.target.files?.[0]) {
+                            handleFileChange(e.target.files[0]);
                         }
                     }}
                     className="hidden"
                 />
 
                 {fileName ? (
-                    <p className="text-sm font-medium text-green-700">{fileName}</p>
+                    <p className="text-sm font-medium text-green-700">
+                        ✓ {fileName}
+                    </p>
                 ) : (
                     <>
                         <Upload className="w-8 h-8 mx-auto text-slate-400" />
