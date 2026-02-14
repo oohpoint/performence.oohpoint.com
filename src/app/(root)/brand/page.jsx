@@ -128,25 +128,6 @@ export default function BrandsPage() {
             {/* Filters Section */}
             <div className="bg-white rounded-2xl  border border-slate-200 p-6 mb-8 flex items-center justify-between">
                 <div className="flex flex-wrap gap-4 items-end">
-                    {/* Search */}
-                    {/* <div className="flex-1 min-w-64">
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Search
-                        </label>
-                        <div className="relative">
-                            <Search
-                                className="absolute left-3 top-3 text-slate-400"
-                                size={18}
-                            />
-                            <input
-                                placeholder="Search brand, business, email..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            />
-                        </div>
-                    </div> */}
-
 
 
                     {/* Industry Filter */}

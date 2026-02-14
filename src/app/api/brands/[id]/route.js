@@ -1,4 +1,3 @@
-// app/api/brands/[id]/route.ts
 import { db } from "@/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { NextResponse } from "next/server";
