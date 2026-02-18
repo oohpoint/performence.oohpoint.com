@@ -10,37 +10,30 @@ import {
     IndianRupee,
     TrendingUp,
     Settings,
-    ArrowLeft,
     ExternalLink,
     FileText,
     AlertCircle,
     Loader2,
     Globe,
-    Phone,
-    MapPinIcon,
     Target,
     BarChart3,
-    CheckCircle2,
-    Clock,
     Zap,
     CopyPlusIcon,
-    Check,
     PlusCircle,
     Briefcase,
     Hash,
     Shield,
-    Calendar,
     Ticket,
     Percent,
     FingerprintPattern,
     MonitorCheck,
-    Copy,
-    Pause,
-    Plus,
     CheckCheck,
+    Phone,
 } from "lucide-react";
 import ProfileCard from "@/components/ProfileCard";
 import { Badge } from "@/components/Resublaty";
+import CampaignsTab from "./_components/CampaignsTab";
+import CampaignWizard from "../dummy2/page";
 
 export default function BrandProfilePage() {
     const router = useRouter();
@@ -50,6 +43,18 @@ export default function BrandProfilePage() {
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState("overview");
     const [copiedId, setCopiedId] = useState(null);
+    const [wizardOpen, setWizardOpen] = useState(false);
+
+    const fetchBrand = async () => {
+        const res = await fetch(`/api/brands/${id}`);
+        const json = await res.json();
+        setBrand(json.data);
+    };
+
+    useEffect(() => {
+        fetchBrand();
+    }, []);
+
 
     useEffect(() => {
         if (!id) return;
@@ -95,23 +100,11 @@ export default function BrandProfilePage() {
         { key: "overview", label: "Overview", icon: FileText },
         { key: "campaigns", label: "Campaigns", icon: TrendingUp },
         { key: "budget", label: "Budget & Analytics", icon: BarChart3 },
-        { key: "activity", label: "Activity", icon: Clock },
         { key: "contacts", label: "Brand Info", icon: User },
 
     ];
 
-    const getStatusStyles = (status) => {
-        switch (status?.toUpperCase()) {
-            case "ACTIVE":
-                return "bg-emerald-100 text-emerald-700 border-emerald-200";
-            case "PENDING":
-                return "bg-amber-100 text-amber-700 border-amber-200";
-            case "INACTIVE":
-                return "bg-slate-100 text-slate-700 border-slate-200";
-            default:
-                return "bg-blue-100 text-blue-700 border-blue-200";
-        }
-    };
+
 
     if (loading) {
         return (
@@ -207,7 +200,10 @@ export default function BrandProfilePage() {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <button onClick={() => router.push(`/brand/${id}/campaigns/new`)} className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-slate-900 text-white cursor-pointer rounded-lg hover:bg-slate-800 transition-all">
+                        <button
+                            onClick={() => setWizardOpen(true)}
+                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-slate-900 text-white cursor-pointer rounded-lg hover:bg-slate-800 transition-all"
+                        >
                             <PlusCircle className="w-4 h-4 text-green-500" />
                             Add Campaign
                         </button>
@@ -217,6 +213,29 @@ export default function BrandProfilePage() {
                     </div>
                 </div>
             </header>
+            <CampaignWizard
+                open={wizardOpen}
+                onClose={() => setWizardOpen(false)}
+                brandName={brand.brandName}
+                brandBudgetRemaining={brand.adBudget}
+                onSubmit={async (payload) => {
+                    const campaignId = crypto.randomUUID(); // ← generate unique campaign ID
+
+                    const res = await fetch(`/api/brands/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            campaignId,      // ← key under campaigns{}
+                            data: payload,   // ← the full campaign object
+                        }),
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json();
+                        throw new Error(err.message || "Failed to save campaign");
+                    }
+                }}
+            />
 
             <div className="flex items-center justify-between border-b border-slate-200 px-2 pt-5 ">
                 {/* TAB NAVIGATION */}
@@ -328,10 +347,10 @@ export default function BrandProfilePage() {
                     </div>
                 ) : activeTab === "contacts" ? (
                     <ContactsTab brand={brand} />
+                ) : activeTab === "campaigns" ? (
+                    <CampaignsTab brand={brand} refreshBrand={fetchBrand} />
                 ) : activeTab === "budget" ? (
                     <BudgetTab brand={brand} />
-                ) : activeTab === "activity" ? (
-                    <ActivityTab brand={brand} />
                 ) : (
                     <EmptyState section={tabs.find((t) => t.key === activeTab)?.label} />
                 )}
@@ -340,81 +359,7 @@ export default function BrandProfilePage() {
     );
 }
 
-/**
- * REUSABLE PRODUCTION COMPONENTS
- */
 
-
-
-const DataRow = ({ label, value, isLink, href, isCopyable }) => (
-    <div className="flex flex-col gap-1 border-l-2 border-slate-100 pl-4 py-1 hover:border-blue-200 transition-colors">
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{label}</span>
-        {isLink ? (
-            <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-bold text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-1 w-fit"
-            >
-                {value}
-                <ExternalLink className="w-3 h-3" />
-            </a>
-        ) : (
-            <span className="text-sm font-bold text-slate-800 break-all">
-                {isCopyable && (
-                    <button
-                        onClick={() => navigator.clipboard.writeText(value)}
-                        className="inline-flex items-center gap-2 hover:text-blue-600 transition group"
-                        title="Copy to clipboard"
-                    >
-                        {value}
-                        <svg
-                            className="w-3 h-3 text-slate-400 group-hover:text-blue-600 opacity-0 group-hover:opacity-100 transition"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            />
-                        </svg>
-                    </button>
-                )}
-                {!isCopyable && value}
-            </span>
-        )}
-    </div>
-);
-
-const StatusItem = ({ label, value, status }) => (
-    <div className="flex items-center justify-between pb-3 border-b border-white/10 last:border-b-0 last:pb-0">
-        <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{label}</p>
-        <span
-            className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${status === "Active" || status === "Verified"
-                ? "bg-emerald-100 text-emerald-700 border-emerald-200"
-                : "bg-amber-100 text-amber-700 border-amber-200"
-                }`}
-        >
-            {value}
-        </span>
-    </div>
-);
-
-const ActionButton = ({ icon: Icon, label, onClick, variant = "primary" }) => (
-    <button
-        onClick={onClick}
-        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-[0.98] ${variant === "primary"
-            ? "bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-900 border-red-200 border"
-            : "border border-green-200 text-green-500 hover:bg-green-50 hover:border-green-300 bg-green-50"
-            }`}
-    >
-        <Icon className="w-4 h-4" />
-        {label}
-    </button>
-);
 
 const EmptyState = ({ section }) => (
     <div className="bg-white rounded-3xl border border-dashed border-slate-200 p-20 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-300">
@@ -539,37 +484,7 @@ const BudgetTab = ({ brand }) => (
     </div>
 );
 
-const ActivityTab = ({ brand }) => (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <section className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-100">
-                <h2 className="font-bold text-slate-800 flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-blue-600" />
-                    Activity Timeline
-                </h2>
-            </div>
-            <div className="p-6">
-                <div className="space-y-4">
-                    <TimelineItem
-                        title="Brand Created"
-                        description="Initial brand setup completed"
-                        timestamp="Today"
-                    />
-                    <TimelineItem
-                        title="Profile Activated"
-                        description={`Status set to ${brand.status}`}
-                        timestamp="Today"
-                    />
-                    <TimelineItem
-                        title="Account Setup"
-                        description="Business details and contact information registered"
-                        timestamp="Today"
-                    />
-                </div>
-            </div>
-        </section>
-    </div>
-);
+
 
 const InfoField = ({ label, value, icon: Icon, isEmail, isLink, href }) => (
     <div className="flex items-start gap-3 pb-4 border-b border-slate-100 last:border-b-0 last:pb-0">

@@ -123,12 +123,12 @@ export default function LocationEditPage() {
                         longitude: data.longitude ? String(data.longitude) : "",
                         radius: data.radius || 500,
                         status: data.status || "Active",
-                        primary_audience: data.audience?.primary || "",
-                        age_band: data.audience?.age_band || "",
-                        gender_skew: data.audience?.gender_skew || "",
-                        education_level: data.audience?.education_level || "",
-                        campus_type: data.audience?.campus_type || "",
-                        footfall_level: data.audience?.footfall_level || "",
+                        primary_audience: data.primary_audience || "",
+                        age_band: data.age_band || "",
+                        gender_skew: data.gender_skew || "",
+                        education_level: data?.education_level || "",
+                        campus_type: data?.campus_type || "",
+                        footfall_level: data?.footfall_level || "",
                         peak_windows: Array.isArray(data.peak_windows) ? data.peak_windows : [],
                         low_windows: Array.isArray(data.low_windows) ? data.low_windows : [],
                         avg_dwell_bucket: data.avg_dwell_bucket || "",
@@ -197,19 +197,12 @@ export default function LocationEditPage() {
                 radius: data.radius ? parseInt(data.radius, 10) : 500,
                 status: data.status,
 
-                college: {
-                    type: data.college_type,
-                    tags: collegeTags || [],
-                },
-
-                audience: {
-                    primary: data.primary_audience,
-                    age_band: data.age_band,
-                    gender_skew: data.gender_skew || "",
-                    education_level: data.education_level || "",
-                    campus_type: data.campus_type || "",
-                    footfall_level: data.footfall_level,
-                },
+                primary_audience: data.primary_audience,
+                age_band: data.age_band,
+                gender_skew: data.gender_skew || "",
+                education_level: data.education_level || "",
+                campus_type: data.campus_type || "",
+                footfall_level: data.footfall_level,
 
                 peak_windows: peakWindows || [],
                 low_windows: lowWindows || [],
@@ -218,14 +211,17 @@ export default function LocationEditPage() {
                 restricted_categories: restrictedCategories || [],
             };
 
-
+            // Conditional fields (flat)
             if (locationType === "College") {
                 submitData.college_type = data.college_type;
                 submitData.college_tags = collegeTags || [];
-            } else if (locationType === "Food & Beverage") {
+            }
+
+            if (locationType === "Food & Beverage") {
                 submitData.sub_location_type = data.sub_location_type;
                 submitData.cafe_sub_categories = cafeSubCategories || [];
             }
+
 
             const response = await fetch(`/api/location/${id}/edit`, {
                 method: "PUT",
@@ -393,8 +389,6 @@ export default function LocationEditPage() {
                                 type="number"
                                 step="any"
                                 register={register}
-                                required="Latitude is required"
-                                error={errors.latitude}
                                 placeholder="e.g., 19.1334"
                             />
 
@@ -404,8 +398,6 @@ export default function LocationEditPage() {
                                 type="number"
                                 step="any"
                                 register={register}
-                                required="Longitude is required"
-                                error={errors.longitude}
                                 placeholder="e.g., 72.9133"
                             />
 

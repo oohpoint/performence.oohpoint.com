@@ -217,7 +217,7 @@ const VendorDashboard = () => {
     return (
         <div className="min-h-screen bg-gray-50 px-10 py-6">
             {/* Stats Cards */}
-            <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 <Card
                     title="Total Vendors"
                     value={statusCounts.total}
@@ -367,7 +367,7 @@ const VendorDashboard = () => {
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-1 text-sm text-gray-700">
-                                                <MapPin size={14} className="text-gray-400 flex-shrink-0" />
+                                                <MapPin size={14} className="text-gray-400 shrink-0" />
                                                 <span className="truncate">{vendor.location?.address}</span>
                                             </div>
                                         </td>

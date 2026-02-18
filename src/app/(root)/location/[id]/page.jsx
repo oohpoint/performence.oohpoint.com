@@ -1,20 +1,17 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import {
-    Edit, MapPin, Users, Activity, Calendar, Info, Navigation,
+    Edit, MapPin, Users, Calendar, Info, Navigation,
     PieChart, History, UserCheck, Store, Clock, Target, AlertCircle, Loader2,
-    Tag,
     Ban,
     X,
-    Globe,
     CheckCheck,
     CopyPlusIcon,
-    PlusCircle,
-    Settings
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import ProfileCard from '@/components/ProfileCard';
 import { Badge } from '@/components/Resublaty';
+import Ambassadors from './_components/Ambassadors';
 
 
 const LocationProfilePage = () => {
@@ -106,15 +103,6 @@ const LocationProfilePage = () => {
     }
 
     if (!location) return null;
-
-    const getStatusStyles = (status) => {
-        switch (status?.toUpperCase()) {
-            case "LIVE": return "bg-emerald-100 text-emerald-700 border-emerald-200";
-            case "UNDER REVIEW": return "bg-amber-100 text-amber-700 border-amber-200";
-            case "INACTIVE": return "bg-slate-100 text-slate-700 border-slate-200";
-            default: return "bg-blue-100 text-blue-700 border-blue-200";
-        }
-    };
 
     return (
         <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans pb-20">
@@ -321,9 +309,14 @@ const LocationProfilePage = () => {
                             </div>
                         </div>
                     </div>
+                ) : activeTab === "ambassadors" ? (
+
+                    <Ambassadors location={location} />
                 ) : (
+
                     <EmptyState section={tabs.find(t => t.key === activeTab)?.label} />
-                )}
+                )
+                }
             </main>
         </div>
     );
@@ -366,5 +359,6 @@ const EmptyState = ({ section }) => (
         </button>
     </div>
 );
+
 
 export default LocationProfilePage;

@@ -91,9 +91,9 @@ export const CAMPUS_TYPE_OPTIONS = [
 ];
 
 export const FOOTFALL_LEVEL_OPTIONS = [
-    "High (>1000/day)",
-    "Medium (500-1000/day)",
-    "Low (<500/day)",
+    "High",
+    "Medium",
+    "Low",
 ];
 
 export const PEAK_WINDOWS = [

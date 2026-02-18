@@ -161,8 +161,8 @@ export default function BrandsPage() {
                             className="w-full border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                         >
                             <option value="">All Status</option>
-                            <option value="true">Verified</option>
-                            <option value="false">Unverified</option>
+                            <option value="true">Pilot</option>
+                            <option value="false">Active</option>
                         </select>
                     </div>
 
@@ -189,19 +189,19 @@ export default function BrandsPage() {
                     {/* Apply Button */}
                     <button
                         onClick={fetchBrands}
-                        className="bg-blue-200 text-blue-700 border-blue-400 border px-5 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                        className="bg-black text-white px-5 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                     >
                         Apply
                     </button>
                 </div>
-                <button onClick={() => router.push("/brand/add-brand")} className="bg-green-200  px-6 py-2.5 rounded-md text-md font-medium transition-colors duration-200 mt-7  hover:bg-green-400 cursor-pointer flex items-center gap-1.5 shadow-xl hover:shadow-neutral-300 ">
-                    <PlusCircle size={18} />
+                <button onClick={() => router.push("/brand/add-brand")} className="bg-black text-white  px-6 py-2.5 rounded-md text-md font-medium transition-colors duration-200 mt-7  cursor-pointer flex items-center gap-1.5 shadow-xl ">
+                    <PlusCircle className="text-green-500" size={18} />
                     Add Brand
                 </button>
             </div>
 
             {/* Table Section */}
-            <div className="bg-white rounded-2xl  border border-slate-200 overflow-hidden">
+            <div className="bg-white rounded-xl  border border-slate-200 overflow-hidden">
                 {loading ? (
                     <div className="py-16 text-center">
                         <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 mb-4">
@@ -218,32 +218,35 @@ export default function BrandsPage() {
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200">
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
-                                        Brand Name
+                                <tr className="border-b border-slate-200 text-[#6B7280]">
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
+                                        Brand
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
                                         Category
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
-                                        Status
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
                                         City
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
-                                        Monthly Cap
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
+                                        Budget
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
-                                        Total Campaigns
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
+                                        Spent
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
-                                        Total Engagements
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
+                                        Reamining
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibolds tracking-wider">
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
+                                        Campaigns
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-[14px] text font-semibold tracking-wider">
+                                        Engagements
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-[14px]  font-semibold whitespace-nowrap tracking-wider">
                                         Avg CPVE
                                     </th>
-                                    <th className="px-6 py-4 text-right text-xs font-semibolds tracking-wider">
+                                    <th className="px-6 py-3 text-right text-[14px]  font-semibold tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
@@ -258,11 +261,11 @@ export default function BrandsPage() {
                                         {/* Brand Name */}
                                         <td className="px-6 py-4 cursor-pointer" onClick={() => router.push(`/brand/${brand.id}`)}>
                                             <div>
-                                                <p className="font-semibold text-slate-900">
+                                                <p className="font-semibold whitespace-nowrap text-slate-900">
                                                     {brand.brandName}
                                                 </p>
-                                                <p className="text-xs text-slate-500 mt-0.5">
-                                                    {brand.id}
+                                                <p className="text-xs whitespace-nowrap text-slate-500 mt-0.5">
+                                                    {brand.poc?.name}
                                                 </p>
                                             </div>
                                         </td>
@@ -270,29 +273,12 @@ export default function BrandsPage() {
                                         {/* Category */}
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2 text-slate-700">
-                                                <Building2
-                                                    size={16}
-                                                    className="text-slate-400"
-                                                />
                                                 <span className="text-sm">
                                                     {brand.industryType}
                                                 </span>
                                             </div>
                                         </td>
 
-                                        {/* Status Badge */}
-                                        <td className="px-6 py-4">
-                                            <span
-                                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${brand.status === "Active"
-                                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                                                    : "bg-amber-50 text-amber-700 border border-amber-200"
-                                                    }`}
-                                            >
-                                                <BadgeCheck size={14} />
-
-                                                {brand.status}
-                                            </span>
-                                        </td>
 
                                         {/* City / Area */}
                                         <td className="px-6 py-4">
@@ -301,7 +287,7 @@ export default function BrandsPage() {
                                                     size={16}
                                                     className="text-purple-400"
                                                 />
-                                                <span className="text-sm">
+                                                <span className="text-sm whitespace-nowrap">
                                                     {brand.targetLocation || brand.city}
                                                 </span>
                                             </div>
@@ -324,6 +310,18 @@ export default function BrandsPage() {
                                             </span>
                                         </td>
 
+                                        {/* Total Engagements */}
+                                        <td className="px-6 py-4">
+                                            <span className="text-sm text-black">
+                                                {brand.totalEngagements || 'N/A'}
+                                            </span>
+                                        </td>
+                                        {/* Total Engagements */}
+                                        <td className="px-6 py-4">
+                                            <span className="text-sm text-black">
+                                                {brand.totalEngagements || 'N/A'}
+                                            </span>
+                                        </td>
                                         {/* Total Engagements */}
                                         <td className="px-6 py-4">
                                             <span className="text-sm text-black">
@@ -362,7 +360,7 @@ export default function BrandsPage() {
                                                 {openMenuId === brand.id && (
                                                     <div
                                                         ref={menuRef}
-                                                        className="absolute right-0 top-10 w-48 bg-white rounded-xl border border-slate-200 shadow-xl z-50 overflow-hidden"
+                                                        className="absolute right-0 top-10 w-32 bg-white rounded-xl border border-slate-200 shadow-xl z-50 overflow-hidden"
                                                     >
                                                         <button
                                                             onClick={() => {
@@ -380,7 +378,7 @@ export default function BrandsPage() {
                                                                 className="text-blue-600"
                                                             />
                                                             <span>
-                                                                View Profile
+                                                                View
                                                             </span>
                                                             <ChevronRight
                                                                 size={16}
@@ -404,7 +402,7 @@ export default function BrandsPage() {
                                                                 className="text-blue-600"
                                                             />
                                                             <span>
-                                                                Edit Brand
+                                                                Edit
                                                             </span>
                                                             <ChevronRight
                                                                 size={16}

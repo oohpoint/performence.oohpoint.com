@@ -1,5 +1,5 @@
 import { db } from "@/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
@@ -42,6 +42,30 @@ export async function GET(req, { params }) {
                 success: false,
                 message: error.message,
             },
+            { status: 500 }
+        );
+    }
+}
+
+
+export async function PUT(req, { params }) {
+    try {
+        const { id } = await params;
+        const { campaignId, data } = await req.json();
+
+        const brandRef = doc(db, "brands", id);
+
+        const updatePayload = {};
+        Object.keys(data).forEach((key) => {
+            updatePayload[`campaigns.${campaignId}.${key}`] = data[key];
+        });
+
+        await updateDoc(brandRef, updatePayload);
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        return NextResponse.json(
+            { success: false, message: error.message },
             { status: 500 }
         );
     }

@@ -173,10 +173,8 @@ export default function LocationsPage() {
             if (!res.ok) throw new Error("Failed to delete");
             setLocations(locations.filter((l) => l.id !== id));
             setDeleteConfirm(null);
-            alert("Location deleted successfully");
         } catch (error) {
             console.error("Delete error:", error);
-            alert("Failed to delete location");
         } finally {
             setDeleting(false);
         }
@@ -194,7 +192,7 @@ export default function LocationsPage() {
     return (
         <div className="min-h-screen bg-[#f9fafb] px-10 py-4 pt-6">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 mb-8">
                 <Card title="Total Locations" value={stats.total} icon={Map} />
                 <Card title="Active Locations" value={stats.active} icon={MapPin} />
                 <Card title="Colleges" value={stats.colleges} icon={Building2} />
@@ -693,8 +691,9 @@ function LocationRow({
 }) {
     const statusColors = {
         Active: "bg-green-100 text-green-700 border-green-200",
-        Inactive: "bg-gray-100 text-gray-700 border-gray-200",
+        "Pre-Activation": "bg-orange-100 text-orange-700 border-orange-200",
     };
+
 
     const typeIcons = {
         College: Building2,
@@ -717,14 +716,19 @@ function LocationRow({
                     <p className="text-xs text-gray-500 mt-0.5">
                         {location.college_tags?.join(", ") || location.college?.tags?.join(", ") || "-"}
                     </p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                        {location.id}
+                    </p>
                 </div>
             </td>
 
             {/* Type */}
             <td className="px-6 py-4">
-                <div className="flex items-center gap-2 text-gray-700">
-                    <TypeIcon size={16} className="text-blue-600" />
-                    <span className="text-sm">{location.location_type}</span>
+                <div className=" text-gray-700 ">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm">{location.location_type}</span>
+                    </div>
+                    <span className="text-xs  text-purple-500">{location.pincode}</span>
                 </div>
             </td>
 
@@ -735,7 +739,7 @@ function LocationRow({
                         <MapPin size={16} className="text-red-500" />
                         <span className="text-sm">{location.city}</span>
                     </div>
-                    <span className="text-xs text-gray-500 pl-6">
+                    <span className="text-xs whitespace-nowrap text-gray-500 pl-6">
                         {location.area}
                     </span>
                 </div>
@@ -744,7 +748,7 @@ function LocationRow({
             {/* Status */}
             <td className="px-6 py-4">
                 <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium border ${statusColors[location.status] || statusColors.Active}`}
+                    className={`inline-flex items-center px-5 py-1 rounded-md text-[12px] font-medium border whitespace-nowrap ${statusColors[location.status] || statusColors.Active}`}
                 >
                     {location.status}
                 </span>

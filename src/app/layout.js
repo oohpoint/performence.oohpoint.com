@@ -1,5 +1,11 @@
 import "./globals.css";
+import { Inter } from "next/font/google";
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter", // optional CSS variable
+  display: "swap",
+});
 
 export const metadata = {
   title: "OohPoint Dashboard",
@@ -8,7 +14,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.className}>
       <body className="bg-white">
         {children}
       </body>
