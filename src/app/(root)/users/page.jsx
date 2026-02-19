@@ -23,6 +23,7 @@ import {
     Clock
 } from "lucide-react";
 import Card from "@/components/Card";
+import { useRouter } from "next/navigation";
 
 const InternalActionMenu = ({ isOpen, actions, menuRef }) => {
     if (!isOpen) return null;
@@ -89,6 +90,7 @@ export default function App() {
     const [filterPanelOpen, setFilterPanelOpen] = useState(false);
     const [openMenuId, setOpenMenuId] = useState(null);
     const [copied, setCopied] = useState(false);
+    const router = useRouter();
 
 
     const menuRef = useRef(null);
@@ -374,8 +376,14 @@ export default function App() {
                                                 isOpen={openMenuId === user.id}
                                                 menuRef={menuRef}
                                                 actions={[
-                                                    { label: "View Profile", icon: Eye, onClick: () => { } },
-                                                    { label: "Edit Details", icon: Pencil, onClick: () => { } },
+                                                    {
+                                                        label: "View Profile",
+                                                        icon: Eye,
+                                                        onClick: () => {
+                                                            setOpenMenuId(null);
+                                                            router.push(`/users/${user.id}`);
+                                                        }
+                                                    },
                                                     {
                                                         label: user.isBlocked ? "Activate" : "Suspend",
                                                         icon: UserMinus,
