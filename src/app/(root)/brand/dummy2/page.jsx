@@ -110,16 +110,6 @@ function getMediaStepType(surveyQuestions) {
     return null;
 }
 
-function calcRewardStats(rewardTiers, engagementTarget) {
-    return rewardTiers.map((t) => {
-        const prob = safeNum(t.probability);
-        const amount = safeNum(t.amount);
-        const winners = Math.round(safeNum(engagementTarget) * (prob / 100));
-        const cost = winners * amount;
-        return { prob, amount, winners, cost };
-    });
-}
-
 function buildSubmitPayload(values) {
     const { engagementTarget, campaignDays, dailyTarget } = calcDerivedMetrics(
         values.budget, values.cpve, values.startDate, values.endDate
@@ -131,7 +121,6 @@ function buildSubmitPayload(values) {
 
     return {
         status: "draft",
-        createdAt: new Date().toISOString(),
         name: values.name.trim(),
         objective: values.objective,
         budget: safeNum(values.budget),
@@ -139,11 +128,9 @@ function buildSubmitPayload(values) {
         startDate: values.startDate,
         endDate: values.endDate,
         engagementTarget,
-        campaignDays,
         dailyTarget,
         media: {
-            videoName: values.videoName || null,
-            videoSizeMB: values.videoSize || null,
+            videoUrl: null, // Will be populated after upload
             surveyEnabled: values.surveyEnabled,
             campaignType,
             questions: values.surveyEnabled
@@ -974,28 +961,6 @@ function StepRewardEngine() {
                 <Plus className="h-3.5 w-3.5 mr-1" /> Add Tier
             </Button>
 
-            {/* Probability progress bar */}
-            <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">Probability total</span>
-                    <span className={cn(
-                        "font-mono font-semibold",
-                        totalProb === 100 ? "text-green-600" : totalProb > 100 ? "text-red-500" : "text-orange-500"
-                    )}>
-                        {totalProb}% / 100%
-                    </span>
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-                    <div
-                        className={cn(
-                            "h-full rounded-full transition-all duration-150",
-                            totalProb === 100 ? "bg-green-500" : totalProb > 100 ? "bg-red-500" : "bg-orange-400"
-                        )}
-                        style={{ width: `${Math.min(totalProb, 100)}%` }}
-                    />
-                </div>
-            </div>
-
             {/* Validation errors */}
             <FieldError
                 show={probOff && totalProb > 100}
@@ -1309,7 +1274,20 @@ export default function CampaignWizard({
         setSubmitError("");
         setIsSubmitting(true);
         try {
-            const payload = buildSubmitPayload(getValues());
+            const values = getValues();
+            const payload = buildSubmitPayload(values);
+
+            // Upload video file to Firebase Storage if present
+            if (values.videoFile) {
+                try {
+                    const { uploadVideoToFirebase } = await import("@/firebase");
+                    const videoUrl = await uploadVideoToFirebase(values.videoFile);
+                    payload.media.videoUrl = videoUrl;
+                } catch (uploadErr) {
+                    throw new Error(`Video upload failed: ${uploadErr.message}`);
+                }
+            }
+
             await onSubmit?.(payload);
             reset(DEFAULT_VALUES);
             setStep(0);
