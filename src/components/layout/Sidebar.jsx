@@ -3,6 +3,8 @@ import { LayoutDashboard, ChevronDown, ChevronUp, Dot, GraduationCap, LoaderPinw
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
+import { TbBrandBlogger, TbQuestionMark } from "react-icons/tb";
+
 
 const Sidebar = () => {
     const router = useRouter();
@@ -16,7 +18,17 @@ const Sidebar = () => {
             { label: 'Location', path: '/location', icon: LocationEditIcon },
             { label: 'Vendor', path: '/vendor', icon: Store },
             { label: 'Ambassadors', path: '/ambassadors', icon: GraduationCap },
-            { label: 'Users', path: '/users', icon: UserCog },
+            {
+                label: 'Users', path: '/users', icon: UserCog,
+                children: [
+                    { label: "Dashboard", path: "/users/dashboard", },
+                    { label: 'Users', path: '/users', },
+                ]
+            },
+
+
+            { label: "Inquiry", path: "/inquiry", icon: TbQuestionMark },
+            { label: "Blogs", path: "/blogs", icon: TbBrandBlogger },
         ],
         []
     );
