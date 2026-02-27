@@ -55,97 +55,7 @@ const MOCK_TASKS = [
         status: 'active',
         city: 'Mumbai',
     },
-    {
-        id: 'TASK-002',
-        name: 'Product Survey - Electronics',
-        type: 'survey',
-        targetSegment: '25-35, Web',
-        rewardValue: 75,
-        budgetUsed: 18500,
-        totalBudget: 40000,
-        completionRate: 62,
-        riskStatus: 'medium',
-        status: 'active',
-        city: 'Bangalore',
-    },
-    {
-        id: 'TASK-003',
-        name: 'Netflix Content Watch',
-        type: 'watch_only',
-        targetSegment: 'All, Mobile',
-        rewardValue: 30,
-        budgetUsed: 42000,
-        totalBudget: 60000,
-        completionRate: 91,
-        riskStatus: 'low',
-        status: 'active',
-        city: 'Delhi',
-    },
-    {
-        id: 'TASK-004',
-        name: 'Mobile App Beta Testing',
-        type: 'hybrid',
-        targetSegment: '20-30, Tech Savvy',
-        rewardValue: 120,
-        budgetUsed: 12000,
-        totalBudget: 30000,
-        completionRate: 45,
-        riskStatus: 'high',
-        status: 'paused',
-        city: 'Hyderabad',
-    },
-    {
-        id: 'TASK-005',
-        name: 'Travel Insurance Awareness',
-        type: 'video_quiz',
-        targetSegment: '35-50, Desktop',
-        rewardValue: 65,
-        budgetUsed: 22000,
-        totalBudget: 45000,
-        completionRate: 73,
-        riskStatus: 'medium',
-        status: 'active',
-        city: 'Chennai',
-    },
-    {
-        id: 'TASK-006',
-        name: 'E-commerce Review Campaign',
-        type: 'survey',
-        targetSegment: '25-40, All',
-        rewardValue: 55,
-        budgetUsed: 35000,
-        totalBudget: 50000,
-        completionRate: 88,
-        riskStatus: 'low',
-        status: 'active',
-        city: 'Pune',
-    },
-    {
-        id: 'TASK-007',
-        name: 'Gaming Platform Engagement',
-        type: 'hybrid',
-        targetSegment: '18-30, Mobile',
-        rewardValue: 100,
-        budgetUsed: 8000,
-        totalBudget: 25000,
-        completionRate: 56,
-        riskStatus: 'high',
-        status: 'terminated',
-        city: 'Mumbai',
-    },
-    {
-        id: 'TASK-008',
-        name: 'Fintech App User Testing',
-        type: 'watch_only',
-        targetSegment: '25-45, Web',
-        rewardValue: 85,
-        budgetUsed: 18000,
-        totalBudget: 35000,
-        completionRate: 79,
-        riskStatus: 'low',
-        status: 'active',
-        city: 'Kolkata',
-    },
+
 ];
 
 // ============================================================================
@@ -462,69 +372,68 @@ export default function Dashboard() {
     });
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-7xl mx-auto space-y-8">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Task Dashboard</h1>
-                        <p className="text-gray-600 mt-1">
-                            Manage and monitor daily platform engagement tasks
-                        </p>
-                    </div>
-                    <Link
-                        href="/users/tasks/new"
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                    >
-                        <Zap className="h-4 w-4" /> Create Task
-                    </Link>
-                </div>
+        <div className="min-h-screen bg-[#f9fafb] px-10 py-4 pt-6">
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <StatCard
-                        title="Active Tasks"
-                        value={DASHBOARD_STATS.activeTasks}
-                        icon={<CheckCircle2 className="h-5 w-5" />}
-                        trend={{ value: 12, positive: true }}
-                    />
-                    <StatCard
-                        title="Paused"
-                        value={DASHBOARD_STATS.pausedTasks}
-                        icon={<PauseCircle className="h-5 w-5" />}
-                        variant="warning"
-                    />
-                    <StatCard
-                        title="Daily PPE"
-                        value={`₹${DASHBOARD_STATS.dailyPPE.toLocaleString()}`}
-                        icon={<TrendingUp className="h-5 w-5" />}
-                        trend={{ value: 8, positive: true }}
-                    />
-                    <StatCard
-                        title="Rewards Paid"
-                        value={`₹${DASHBOARD_STATS.dailyRewardsPaid.toLocaleString()}`}
-                        icon={<DollarSign className="h-5 w-5" />}
-                    />
-                    <StatCard
-                        title="Avg Completion"
-                        value={`${DASHBOARD_STATS.avgCompletionRate}%`}
-                        icon={<CheckCircle2 className="h-5 w-5" />}
-                        trend={{ value: 3.2, positive: true }}
-                    />
-                </div>
-
+            {/* Header */}
+            <div className="flex items-center justify-between">
                 <div>
-                    {/* Filters */}
-                    <FilterBar filters={filters} onChange={setFilters} />
-
-                    {/* Task Table */}
-                    <TaskTable tasks={filteredTasks} />
+                    <h1 className="text-3xl font-bold text-gray-900">Task Dashboard</h1>
+                    <p className="text-gray-600 mt-1">
+                        Manage and monitor daily platform engagement tasks
+                    </p>
                 </div>
+                <Link
+                    href="/users/tasks/new"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                    <Zap className="h-4 w-4" /> Create Task
+                </Link>
+            </div>
 
-                {/* Footer Info */}
-                <div className="text-center text-sm text-gray-600">
-                    Showing {filteredTasks.length} of {MOCK_TASKS.length} tasks
-                </div>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <Card
+                    title="Active Tasks"
+                    value={DASHBOARD_STATS.activeTasks}
+                    icon={<CheckCircle2 className="h-5 w-5" />}
+                    trend={{ value: 12, positive: true }}
+                />
+                <Card
+                    title="Paused"
+                    value={DASHBOARD_STATS.pausedTasks}
+                    icon={<PauseCircle className="h-5 w-5" />}
+                    variant="warning"
+                />
+                <Card
+                    title="Daily PPE"
+                    value={`₹${DASHBOARD_STATS.dailyPPE.toLocaleString()}`}
+                    icon={<TrendingUp className="h-5 w-5" />}
+                    trend={{ value: 8, positive: true }}
+                />
+                <Card
+                    title="Rewards Paid"
+                    value={`₹${DASHBOARD_STATS.dailyRewardsPaid.toLocaleString()}`}
+                    icon={<DollarSign className="h-5 w-5" />}
+                />
+                <Card
+                    title="Avg Completion"
+                    value={`${DASHBOARD_STATS.avgCompletionRate}%`}
+                    icon={<CheckCircle2 className="h-5 w-5" />}
+                    trend={{ value: 3.2, positive: true }}
+                />
+            </div>
+
+            <div>
+                {/* Filters */}
+                <FilterBar filters={filters} onChange={setFilters} />
+
+                {/* Task Table */}
+                <TaskTable tasks={filteredTasks} />
+            </div>
+
+            {/* Footer Info */}
+            <div className="text-center text-sm text-gray-600">
+                Showing {filteredTasks.length} of {MOCK_TASKS.length} tasks
             </div>
         </div>
     );

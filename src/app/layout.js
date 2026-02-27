@@ -1,9 +1,10 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { MyProvider } from "@/context/MyContext"; // ⬅️ add this
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter", // optional CSS variable
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.className}>
       <body className="bg-white">
-        {children}
+        <MyProvider>{children}</MyProvider> {/* ⬅️ wrap here */}
       </body>
     </html>
   );

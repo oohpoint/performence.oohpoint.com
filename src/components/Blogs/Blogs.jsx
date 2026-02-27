@@ -49,36 +49,11 @@ const Blogs = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 w-full min-h-screen">
-      {/* Enhanced Header with gradient background */}
-      <div className="bg-gradient-to-r from-oohpoint-primary-3 to-purple-600 text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-            {/* Title Section */}
-            <div className="flex-1">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-2 tracking-tight">
-                Blogs & Case Studies
-              </h1>
-              <p className="text-white/90 text-sm sm:text-base">
-                Discover insights, stories, and knowledge
-              </p>
-            </div>
-
-            {/* Action Button - Desktop */}
-            <button
-              onClick={() => setActiveSection(SECTIONS.CREATE)}
-              className="hidden lg:flex items-center gap-2 bg-white text-oohpoint-primary-3 px-6 py-3 rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-200"
-            >
-              <PlusCircleIcon className="h-5 w-5" />
-              Create New Post
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="bg-white w-full min-h-screen">
 
       {/* Navigation & Filter Bar */}
-      <div className="bg-white border-b sticky top-0 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+      <div className="bg-white  sticky top-0 z-30 ">
+        <div className="max-w-7xl mx-auto px-4 py-3 ">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             {/* Tab Navigation */}
             <div className="flex gap-2 bg-gray-100 p-1 rounded-lg w-full sm:w-auto">

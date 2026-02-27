@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Eye,
 } from "lucide-react";
+import Card from "@/components/Card";
 
 // Reusable Modal Component (matching blog style)
 const Modal = ({ isOpen, onClose, title, children }) => {
@@ -316,185 +317,166 @@ const SponsorsPage = () => {
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 w-full min-h-screen">
-      {/* Header - matching blog page style */}
-      <div className="bg-gradient-to-r from-oohpoint-primary-3 to-purple-600 text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-            {/* Title Section */}
-            <div className="flex-1">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-2 tracking-tight">
-                Inquiries Dashboard
-              </h1>
-              <p className="text-white/90 text-sm sm:text-base">
-                Manage and track all your inquiries in one place
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#f9fafb] px-10 py-4 pt-6">
+      {/* Stats Cards - matching blog page style */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
+        <Card
+          icon={Users}
+          label="Sponsors"
+          value={categorizedData.sponsors.length}
+          color="blue"
+          isActive={selectedType === "sponsors"}
+          onClick={() => {
+            setSelectedType("sponsors");
+            setCurrentPage(1);
+          }}
+          badge={categorizedData.unreadCounts?.sponsors || 0}
+        />
+        <Card
+          icon={Award}
+          label="Ambassadors"
+          value={categorizedData.ambassador.length}
+          color="yellow"
+          isActive={selectedType === "ambassador"}
+          onClick={() => {
+            setSelectedType("ambassador");
+            setCurrentPage(1);
+          }}
+          badge={categorizedData.unreadCounts?.ambassador || 0}
+        />
+        <Card
+          icon={MessageSquare}
+          label="Contacts"
+          value={categorizedData.contact.length}
+          color="purple"
+          isActive={selectedType === "contact"}
+          onClick={() => {
+            setSelectedType("contact");
+            setCurrentPage(1);
+          }}
+          badge={categorizedData.unreadCounts?.contact || 0}
+        />
+        <Card
+          icon={Megaphone}
+          label="Advertisers"
+          value={categorizedData.advertise.length}
+          color="green"
+          isActive={selectedType === "advertise"}
+          onClick={() => {
+            setSelectedType("advertise");
+            setCurrentPage(1);
+          }}
+          badge={categorizedData.unreadCounts?.advertise || 0}
+        />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
-        {/* Stats Cards - matching blog page style */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard
-            icon={Users}
-            label="Sponsors"
-            value={categorizedData.sponsors.length}
-            color="blue"
-            isActive={selectedType === "sponsors"}
-            onClick={() => {
-              setSelectedType("sponsors");
-              setCurrentPage(1);
-            }}
-            badge={categorizedData.unreadCounts?.sponsors || 0}
-          />
-          <StatCard
-            icon={Award}
-            label="Ambassadors"
-            value={categorizedData.ambassador.length}
-            color="yellow"
-            isActive={selectedType === "ambassador"}
-            onClick={() => {
-              setSelectedType("ambassador");
-              setCurrentPage(1);
-            }}
-            badge={categorizedData.unreadCounts?.ambassador || 0}
-          />
-          <StatCard
-            icon={MessageSquare}
-            label="Contacts"
-            value={categorizedData.contact.length}
-            color="purple"
-            isActive={selectedType === "contact"}
-            onClick={() => {
-              setSelectedType("contact");
-              setCurrentPage(1);
-            }}
-            badge={categorizedData.unreadCounts?.contact || 0}
-          />
-          <StatCard
-            icon={Megaphone}
-            label="Advertisers"
-            value={categorizedData.advertise.length}
-            color="green"
-            isActive={selectedType === "advertise"}
-            onClick={() => {
-              setSelectedType("advertise");
-              setCurrentPage(1);
-            }}
-            badge={categorizedData.unreadCounts?.advertise || 0}
-          />
+      {/* Table Container - matching blog page style */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        {/* Table Header */}
+        <div className="mb-6 pb-4 border-b px-6 pt-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 capitalize">
+            {selectedType} Inquiries
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            {categorizedData[selectedType]?.length || 0} {categorizedData[selectedType]?.length === 1 ? "inquiry" : "inquiries"} found
+          </p>
         </div>
 
-        {/* Table Container - matching blog page style */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          {/* Table Header */}
-          <div className="mb-6 pb-4 border-b px-6 pt-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 capitalize">
-              {selectedType} Inquiries
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              {categorizedData[selectedType]?.length || 0} {categorizedData[selectedType]?.length === 1 ? "inquiry" : "inquiries"} found
-            </p>
-          </div>
-
-          {/* Table */}
-          <div className="overflow-x-auto px-6">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  {tableConfig[selectedType].columns.map((col) => (
-                    <th
-                      key={col}
-                      className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                    >
-                      {col}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {currentData.length > 0 ? (
-                  currentData.map((item, idx) => {
-                    const isUnread = new Date(item.createdAt) > new Date(Date.now() - 24 * 60 * 60 * 1000);
-                    return (
-                      <tr
-                        key={idx}
-                        className={`hover:bg-gray-50 transition-colors ${isUnread ? "bg-blue-50/50 font-semibold" : ""
-                          }`}
-                      >
-                        {tableConfig[selectedType].renderRow(item).map((cell, cellIdx) => (
-                          <td key={cellIdx} className="px-6 py-4 text-sm text-gray-900">
-                            {cell || "N/A"}
-                          </td>
-                        ))}
-                        <td className="px-6 py-4 text-right">
-                          <button
-                            onClick={() => handleRowClick(item)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
-                          >
-                            <Eye className="h-4 w-4" />
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={tableConfig[selectedType].columns.length}
-                      className="px-6 py-12 text-center text-gray-500"
-                    >
-                      <FileText className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                      <p className="text-lg font-medium">No {selectedType} inquiries yet</p>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination - matching blog page style */}
-          {totalPages > 1 && (
-            <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-              <p className="text-sm text-gray-600">
-                Showing {((currentPage - 1) * rowsPerPage) + 1} to{" "}
-                {Math.min(currentPage * rowsPerPage, categorizedData[selectedType]?.length || 0)} of{" "}
-                {categorizedData[selectedType]?.length || 0} results
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  <ChevronLeft className="h-5 w-5 text-gray-600" />
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${currentPage === page
-                      ? "bg-purple-600 text-white"
-                      : "border border-gray-300 text-gray-700 hover:bg-gray-50"
-                      }`}
+        {/* Table */}
+        <div className="overflow-x-auto px-6">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                {tableConfig[selectedType].columns.map((col) => (
+                  <th
+                    key={col}
+                    className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                   >
-                    {page}
-                  </button>
+                    {col}
+                  </th>
                 ))}
-                <button
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                  disabled={currentPage === totalPages}
-                  className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  <ChevronRight className="h-5 w-5 text-gray-600" />
-                </button>
-              </div>
-            </div>
-          )}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {currentData.length > 0 ? (
+                currentData.map((item, idx) => {
+                  const isUnread = new Date(item.createdAt) > new Date(Date.now() - 24 * 60 * 60 * 1000);
+                  return (
+                    <tr
+                      key={idx}
+                      className={`hover:bg-gray-50 transition-colors ${isUnread ? "bg-blue-50/50 font-semibold" : ""
+                        }`}
+                    >
+                      {tableConfig[selectedType].renderRow(item).map((cell, cellIdx) => (
+                        <td key={cellIdx} className="px-6 py-4 text-sm text-gray-900">
+                          {cell || "N/A"}
+                        </td>
+                      ))}
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => handleRowClick(item)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                        >
+                          <Eye className="h-4 w-4" />
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td
+                    colSpan={tableConfig[selectedType].columns.length}
+                    className="px-6 py-12 text-center text-gray-500"
+                  >
+                    <FileText className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <p className="text-lg font-medium">No {selectedType} inquiries yet</p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
+
+        {/* Pagination - matching blog page style */}
+        {totalPages > 1 && (
+          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+            <p className="text-sm text-gray-600">
+              Showing {((currentPage - 1) * rowsPerPage) + 1} to{" "}
+              {Math.min(currentPage * rowsPerPage, categorizedData[selectedType]?.length || 0)} of{" "}
+              {categorizedData[selectedType]?.length || 0} results
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <ChevronLeft className="h-5 w-5 text-gray-600" />
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${currentPage === page
+                    ? "bg-purple-600 text-white"
+                    : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                    }`}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <ChevronRight className="h-5 w-5 text-gray-600" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Modal */}
@@ -506,6 +488,7 @@ const SponsorsPage = () => {
         {renderModalContent()}
       </Modal>
     </div>
+
   );
 };
 
