@@ -319,7 +319,7 @@ const SponsorsPage = () => {
   return (
     <div className="min-h-screen bg-[#f9fafb] px-10 py-4 pt-6">
       {/* Stats Cards - matching blog page style */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
         <Card
           icon={Users}
           label="Sponsors"

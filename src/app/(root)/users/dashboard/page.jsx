@@ -16,6 +16,7 @@ import {
     Copy,
     XCircle,
 } from 'lucide-react';
+import Card from '@/components/Card';
 
 
 // ============================================================================
@@ -372,7 +373,7 @@ export default function Dashboard() {
     });
 
     return (
-        <div className="min-h-screen bg-[#f9fafb] px-10 py-4 pt-6">
+        <div className="min-h-screen bg-[#f9fafb] px-10 py-4 pt-6 space-y-4">
 
             {/* Header */}
             <div className="flex items-center justify-between">
@@ -384,41 +385,41 @@ export default function Dashboard() {
                 </div>
                 <Link
                     href="/users/tasks/new"
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors font-medium"
                 >
                     <Zap className="h-4 w-4" /> Create Task
                 </Link>
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                 <Card
                     title="Active Tasks"
                     value={DASHBOARD_STATS.activeTasks}
-                    icon={<CheckCircle2 className="h-5 w-5" />}
+                    icon={CheckCircle2}
                     trend={{ value: 12, positive: true }}
                 />
                 <Card
                     title="Paused"
                     value={DASHBOARD_STATS.pausedTasks}
-                    icon={<PauseCircle className="h-5 w-5" />}
+                    icon={PauseCircle}
                     variant="warning"
                 />
                 <Card
                     title="Daily PPE"
                     value={`₹${DASHBOARD_STATS.dailyPPE.toLocaleString()}`}
-                    icon={<TrendingUp className="h-5 w-5" />}
+                    icon={TrendingUp}
                     trend={{ value: 8, positive: true }}
                 />
                 <Card
                     title="Rewards Paid"
                     value={`₹${DASHBOARD_STATS.dailyRewardsPaid.toLocaleString()}`}
-                    icon={<DollarSign className="h-5 w-5" />}
+                    icon={DollarSign}
                 />
                 <Card
                     title="Avg Completion"
                     value={`${DASHBOARD_STATS.avgCompletionRate}%`}
-                    icon={<CheckCircle2 className="h-5 w-5" />}
+                    icon={CheckCircle2}
                     trend={{ value: 3.2, positive: true }}
                 />
             </div>

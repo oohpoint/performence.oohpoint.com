@@ -49,7 +49,7 @@ const Blogs = () => {
   };
 
   return (
-    <div className="bg-white w-full min-h-screen">
+    <div className="bg-white w-full min-h-screen ">
 
       {/* Navigation & Filter Bar */}
       <div className="bg-white  sticky top-0 z-30 ">
